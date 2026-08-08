@@ -1,4 +1,8 @@
 {
   "name": "173day",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev": "npx --yes wrangler dev",
+    "deploy": "npx --yes wrangler deploy"
+  }
 }
