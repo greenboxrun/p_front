@@ -12,7 +12,7 @@ function startFileFallback() {
 
   const shell = (body) => `
     <header class="border-b border-ink/15 bg-paper"><div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
-      <button data-home class="group flex items-center gap-3" aria-label="173DAY 홈"><span class="grid h-8 w-8 place-items-center rounded-full bg-ink text-xs font-bold text-lime">17</span><span class="font-mono text-sm font-medium tracking-[.14em]">3DAY</span></button>
+      <button data-home class="group flex items-center gap-3" aria-label="173DAY 홈"><span class="grid h-8 min-w-8 place-items-center rounded-full bg-ink px-1.5 text-[10px] font-bold tracking-[-.08em] text-lime">173</span><span class="font-mono text-sm font-medium tracking-[.14em]">DAY</span></button>
       <p class="hidden font-mono text-[11px] tracking-[.08em] text-ink/50 sm:block">10 MINUTE NEWS WINDOW</p><button data-home class="text-sm font-semibold underline decoration-moss/40 underline-offset-4">오늘의 흐름</button>
     </div></header>${body}`;
   const home = () => {

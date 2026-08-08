@@ -13,3 +13,5 @@ vue cdn을 쓸것.
 tailwind cdn을 쓸것.
 
 html 이랑 js로 구성되어있지만 최대한 solid 원칙으로 유지보수 하기 쉽게 구성할것.
+
+디자인 수정시 frontend-design 를 참고할것
