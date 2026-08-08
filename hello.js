@@ -1,3 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("hello").textContent = "Hello Worldㅎㄷㄷㄷㄷㄷㅎㅎㅎㅎ👋";
-});
+const { createApp, ref } = Vue;
+
+createApp({
+  setup() {
+    const message = ref("Hello Worldㅎㄷㄷㄷㄷㄷㅎㅎㅎㅎ👋");
+    return { message };
+  },
+}).mount("#app");

@@ -4,27 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>173day</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #1e1b4b, #4c1d95);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    h1 {
-      color: #fff;
-      font-size: clamp(2rem, 6vw, 4rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 </head>
-<body>
-  <h1 id="hello"></h1>
+<body class="h-screen flex items-center justify-center bg-gradient-to-br from-[#1e1b4b] to-[#4c1d95] font-sans">
+  <div id="app">
+    <h1 class="text-white font-bold tracking-tight text-[clamp(2rem,6vw,4rem)]" style="text-shadow: 0 4px 24px rgba(0,0,0,0.3);">{{ message }}</h1>
+  </div>
   <script src="hello.js"></script>
 </body>
 </html>
