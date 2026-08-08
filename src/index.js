@@ -4,10 +4,29 @@ export default {
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>173day</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e1b4b, #4c1d95);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    h1 {
+      color: #fff;
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello World</h1>
+  <h1>Hello World 👋</h1>
 </body>
 </html>`;
     return new Response(html, {
