@@ -15,7 +15,7 @@
 
     source: {
       name: "클리앙",
-      url: "https://www.clien.net/service/board/park/19243790"
+      url: ""
     },
 
     tags: [
