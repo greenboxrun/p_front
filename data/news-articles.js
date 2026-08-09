@@ -1,32 +1,5 @@
 ﻿window.NEWS_ARTICLES = [
-  { id: 1, title: 'AI가 바꾼 일의 속도', category: '테크', summary: '생성형 AI가 업무 방식에 미친 변화를 살펴봅니다.', publishedAt: '2026-08-08T09:42:00+09:00', updatedAt: '2026-08-08T10:00:00+09:00', author: { name: '173DAY 편집부' }, source: { name: '173DAY', url: null }, tags: ['AI', '업무', '생산성'], readingTime: 3, thumbnail: null, content: [
-    { type: 'paragraph', text: '생성형 AI를 도입한 조직의 질문은 빠르게 달라지고 있다. “무엇을 자동화할 수 있을까”에서 “절약한 시간을 어디에 써야 할까”로 무게중심이 옮겨갔다.' },
-    { type: 'heading', text: '달라진 업무의 중심' },
-    { type: 'paragraph', text: '현장에서는 반복 작업의 감소보다 의사결정 과정의 변화가 더 크게 감지된다. 정보를 모으고 정리하는 일은 빨라졌지만, 좋은 질문을 만들고 결과를 판단하는 역량의 중요성은 오히려 커졌다.' },
-    { type: 'quote', text: '좋은 질문을 만들고 결과를 판단하는 역량이 중요해졌다.' },
-    { type: 'list', items: ['반복 작업은 도구에 맡긴다', '검토 기준은 팀이 함께 만든다', '절약한 시간은 판단과 창작에 다시 투자한다'] },
-    { type: 'note', label: '173DAY TAKE', text: '기술을 더하는 일보다, 기술이 들어온 뒤의 책임선을 다시 그리는 일이 먼저다.' }
-  ] },
-  { id: 2, title: '작은 브랜드가 오래 기억되는 법', category: '비즈니스', summary: '대중성보다 구체적인 감각을 가진 브랜드가 선택받고 있습니다.', publishedAt: '2026-08-08T09:28:00+09:00', updatedAt: '2026-08-08T09:28:00+09:00', author: { name: '173DAY 편집부' }, source: { name: '173DAY', url: null }, tags: ['브랜딩', '소비자', '취향'], readingTime: 4, thumbnail: null, content: [
-    { type: 'paragraph', text: '모두를 위한 메시지보다 특정한 사람의 하루를 정확히 이해하는 메시지가 더 오래 남는다. 작은 브랜드들이 취향을 중심으로 충성도 높은 커뮤니티를 만드는 이유다.' },
-    { type: 'heading', text: '기능보다 먼저 도착하는 감각' },
-    { type: 'paragraph', text: '제품의 기능은 빠르게 비슷해진다. 그때 차이를 만드는 것은 어떤 장면에서, 어떤 말투로, 어떤 경험을 건네는가에 대한 일관성이다.' },
-    { type: 'quote', text: '브랜드는 선택지가 아니라, 선택하는 기준을 만든다.' },
-    { type: 'list', items: ['누구를 위한 브랜드인지 좁게 정의하기', '반복해서 사용할 수 있는 언어와 장면 만들기', '고객의 반응을 다음 경험에 반영하기'] }
-  ] },
-  { id: 3, title: '도시의 빈 시간이 다시 길어지고 있다', category: '사회', summary: '빠르게 이동하는 도시에서 머무는 시간이 새로운 생활 인프라가 되고 있습니다.', publishedAt: '2026-08-08T09:11:00+09:00', updatedAt: '2026-08-08T09:11:00+09:00', author: { name: '173DAY 편집부' }, source: { name: '173DAY', url: null }, tags: ['도시', '이동', '생활'], readingTime: 3, thumbnail: null, content: [
-    { type: 'paragraph', text: '도시를 운영하는 속도는 빨라졌지만, 사람들이 원하는 하루의 리듬은 오히려 다양해졌다. 잠깐 멈출 수 있는 장소와 이동 사이의 여백이 생활의 질을 결정하기 시작했다.' },
-    { type: 'heading', text: '속도 다음에 오는 질문' },
-    { type: 'paragraph', text: '더 빨리 도착하는 것만으로는 충분하지 않다. 누구나 잠시 쉬고, 방향을 바꾸고, 안전하게 머물 수 있는 도시의 구조가 함께 필요하다.' },
-    { type: 'note', label: 'FIELD NOTE', text: '좋은 도시는 이동 시간을 없애는 대신, 이동 중에도 선택할 수 있는 시간을 남긴다.' }
-  ] },
-  { id: 4, title: '짧은 영상 다음의 콘텐츠', category: '문화', summary: '즉각적인 반응을 넘어 오래 머무는 경험을 찾는 사람들이 늘고 있습니다.', publishedAt: '2026-08-08T08:55:00+09:00', updatedAt: '2026-08-08T08:55:00+09:00', author: { name: '173DAY 편집부' }, source: { name: '173DAY', url: null }, tags: ['콘텐츠', '영상', '경험'], readingTime: 4, thumbnail: null, content: [
-    { type: 'paragraph', text: '짧고 강한 콘텐츠에 익숙해진 사람들 사이에서 오히려 천천히 따라가는 경험이 다시 주목받고 있다. 중요한 것은 길이가 아니라, 다음 장면을 기다릴 이유다.' },
-    { type: 'heading', text: '머무를 만한 이유를 설계하기' },
-    { type: 'paragraph', text: '콘텐츠의 길이보다 중요한 것은 리듬이다. 중간에 멈춰도 다시 돌아올 수 있고, 한 번 더 볼 때 새로운 결이 발견되는 구조가 오래 남는다.' },
-    { type: 'quote', text: '좋은 콘텐츠는 시선을 붙잡는 데서 끝나지 않고, 시간을 돌려준다.' },
-    { type: 'list', items: ['첫 장면에서 경험의 약속을 분명히 하기', '정보 사이에 호흡을 남기기', '끝난 뒤에도 생각할 질문 하나 건네기'] }
-  ] },
+
   {
     id: 5,
     title: "4살·6살 딸 태운 채 시속 190km 음주 질주…사망사고 낸 30대 엄마, 징역 12년",
