@@ -22,10 +22,8 @@ const app = Vue.createApp({
     const articles = Vue.ref(initialArticles);
     const now = Vue.ref(new Date());
     const route = Vue.ref(location.hash || '#/');
-    let clockTimer;
     let refreshTimer;
     const selectedArticle = Vue.computed(() => { const match = route.value.match(/^#\/article\/(\d+)$/); return match ? articles.value.find((article) => article.id === Number(match[1])) : null; });
-    const countdown = Vue.computed(() => { const remaining = 600 - ((now.value.getMinutes() % 10) * 60 + now.value.getSeconds()); return `${String(Math.floor(remaining / 60)).padStart(2, '0')}:${String(remaining % 60).padStart(2, '0')}`; });
     const briefDate = Vue.computed(() => new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }).format(now.value));
     const formatDate = (value) => new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(value));
     const goHome = () => { location.hash = '#/'; window.scrollTo({ top: 0, behavior: 'smooth' }); };
@@ -38,17 +36,15 @@ const app = Vue.createApp({
       }
     };
     Vue.onMounted(() => {
-      clockTimer = setInterval(() => { now.value = new Date(); }, 1000);
       refreshArticles();
       refreshTimer = setInterval(refreshArticles, REFRESH_INTERVAL);
       window.addEventListener('hashchange', handleHash);
     });
     Vue.onUnmounted(() => {
-      clearInterval(clockTimer);
       clearInterval(refreshTimer);
       window.removeEventListener('hashchange', handleHash);
     });
-    return { articles, selectedArticle, countdown, briefDate, formatDate, goHome };
+    return { articles, selectedArticle, briefDate, formatDate, goHome };
   }
 });
 app.mount('#app');
