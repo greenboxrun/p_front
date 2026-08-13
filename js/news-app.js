@@ -6,6 +6,21 @@ function getArticles() {
   return window.NEWS_ARTICLES;
 }
 
+// 기사 원문에 복사 과정에서 남은 이스케이프 따옴표가 있어도
+// 화면에는 자연스러운 따옴표만 표시되도록 정리한다.
+function cleanArticleValue(value) {
+  if (typeof value === 'string') {
+    let cleaned = value;
+    while (cleaned.includes('\\"')) cleaned = cleaned.replace(/\\"/g, '"');
+    return cleaned;
+  }
+  if (Array.isArray(value)) return value.map(cleanArticleValue);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, cleanArticleValue(item)]));
+  }
+  return value;
+}
+
 function loadArticlesScript() {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -16,10 +31,11 @@ function loadArticlesScript() {
   });
 }
 
-const initialArticles = getArticles();
 const app = Vue.createApp({
   setup() {
-    const articles = Vue.ref(initialArticles);
+    const articles = Vue.ref([]);
+    const isLoading = Vue.ref(true);
+    const loadError = Vue.ref(false);
     const now = Vue.ref(new Date());
     const route = Vue.ref(location.hash || '#/');
     let refreshTimer;
@@ -28,15 +44,26 @@ const app = Vue.createApp({
     const formatDate = (value) => new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(value));
     const goHome = () => { location.hash = '#/'; window.scrollTo({ top: 0, behavior: 'smooth' }); };
     const handleHash = () => { route.value = location.hash || '#/'; window.scrollTo({ top: 0, behavior: 'auto' }); };
-    const refreshArticles = async () => {
+    const refreshArticles = async (isInitialLoad = false) => {
+      if (isInitialLoad) {
+        isLoading.value = true;
+        loadError.value = false;
+      }
       try {
-        articles.value = await loadArticlesScript();
+        articles.value = cleanArticleValue(await loadArticlesScript());
+        isLoading.value = false;
+        loadError.value = false;
       } catch (error) {
+        if (isInitialLoad) {
+          isLoading.value = false;
+          loadError.value = true;
+        }
         console.error(error);
       }
     };
+    const retryInitialLoad = () => refreshArticles(true);
     Vue.onMounted(() => {
-      refreshArticles();
+      refreshArticles(true);
       refreshTimer = setInterval(refreshArticles, REFRESH_INTERVAL);
       window.addEventListener('hashchange', handleHash);
     });
@@ -44,7 +71,7 @@ const app = Vue.createApp({
       clearInterval(refreshTimer);
       window.removeEventListener('hashchange', handleHash);
     });
-    return { articles, selectedArticle, briefDate, formatDate, goHome };
+    return { articles, isLoading, loadError, selectedArticle, briefDate, formatDate, goHome, retryInitialLoad };
   }
 });
 app.mount('#app');
