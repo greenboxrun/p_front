@@ -1,6 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-544WJ9NP');</script>
+  <!-- End Google Tag Manager -->
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f4f6f1" /><title>173DAY · 지금 읽을 뉴스</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,6 +26,10 @@
   </style>
 </head>
 <body class="min-h-screen bg-paper font-sans text-ink antialiased">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-544WJ9NP"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div id="app" v-cloak>
 <header class="border-b border-ink/15 bg-paper/95 backdrop-blur"><div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8"><a href="#/" class="group flex items-center gap-3" aria-label="173DAY 홈"><span class="grid h-8 min-w-8 place-items-center rounded-full bg-ink px-1.5 text-[10px] font-bold tracking-[-.08em] text-lime transition-transform group-hover:rotate-12">173</span><span class="font-mono text-sm font-medium tracking-[.14em]">DAY</span></a><p class="hidden font-mono text-[11px] tracking-[.08em] text-ink/50 sm:block">10 MINUTE NEWS WINDOW</p><button @click="goHome" class="text-sm font-semibold underline decoration-moss/40 underline-offset-4 hover:decoration-moss">오늘의 흐름</button></div></header>
 <main v-if="isLoading" class="mx-auto flex min-h-[60vh] max-w-6xl items-center px-5 pb-16 pt-10 sm:px-8 sm:pt-16"><div><p class="loading-mark font-mono text-xs tracking-[.14em] text-moss">LATEST SIGNALS · LOADING</p><p class="mt-4 font-display text-2xl font-bold text-ink">최신 흐름을 불러오는 중입니다.</p></div></main>
