@@ -21,6 +21,26 @@ function cleanArticleValue(value) {
   return value;
 }
 
+function normalizeArticle(article) {
+  const source = cleanArticleValue(article);
+  if (!source || typeof source !== 'object' || Array.isArray(source)) throw new Error('기사 데이터는 하나의 객체여야 합니다.');
+  if (!source.title || typeof source.title !== 'string') throw new Error('title 필드가 필요합니다.');
+  if (!source.content || !Array.isArray(source.content)) throw new Error('content 필드는 배열이어야 합니다.');
+  return {
+    ...source,
+    id: source.id ?? Date.now(),
+    category: source.category || '기타',
+    summary: source.summary || '',
+    tags: Array.isArray(source.tags) ? source.tags : [],
+    readingTime: Number(source.readingTime) || 0,
+    content: source.content.filter((block) => block && typeof block === 'object' && typeof block.type === 'string').map((block) => ({
+      ...block,
+      text: block.text || '',
+      items: Array.isArray(block.items) ? block.items : []
+    }))
+  };
+}
+
 function loadArticlesScript() {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -32,6 +52,7 @@ function loadArticlesScript() {
 }
 
 const app = Vue.createApp({
+  components: { ArticleView: window.ArticleView },
   setup() {
     const articles = Vue.ref([]);
     const isLoading = Vue.ref(true);
@@ -50,7 +71,7 @@ const app = Vue.createApp({
         loadError.value = false;
       }
       try {
-        articles.value = cleanArticleValue(await loadArticlesScript());
+        articles.value = (await loadArticlesScript()).map(normalizeArticle);
         isLoading.value = false;
         loadError.value = false;
       } catch (error) {
