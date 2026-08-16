@@ -35,7 +35,9 @@ function normalizeArticle(article) {
     readingTime: Number(source.readingTime) || 0,
     content: source.content.filter((block) => block && typeof block === 'object' && typeof block.type === 'string').map((block) => ({
       ...block,
-      text: block.text || '',
+      text: block.type === 'quote' && typeof window.normalizeQuoteText === 'function'
+        ? window.normalizeQuoteText(block.text || '')
+        : (block.text || ''),
       items: Array.isArray(block.items) ? block.items : []
     }))
   };

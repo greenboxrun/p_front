@@ -1,9 +1,20 @@
 (() => {
+  const normalizeQuoteText = (value) => {
+    const text = String(value ?? '');
+    if (text.startsWith('““') && text.endsWith('””')) return text.slice(1, -1);
+    return text;
+  };
+
+  const formatQuoteText = (value) => {
+    const text = normalizeQuoteText(value);
+    if (text.startsWith('“') && text.endsWith('”')) return text;
+    return `“${text}”`;
+  };
   const normalizeArticle = (article) => {
     if (!article || typeof article !== 'object' || Array.isArray(article)) throw new Error('기사 데이터는 하나의 객체여야 합니다.');
     if (!article.title || typeof article.title !== 'string') throw new Error('title 필드가 필요합니다.');
     if (!Array.isArray(article.content)) throw new Error('content 필드는 배열이어야 합니다.');
-    return { ...article, id: article.id ?? Date.now(), category: article.category || '기타', summary: article.summary || '', tags: Array.isArray(article.tags) ? article.tags : [], readingTime: Number(article.readingTime) || 0, content: article.content.filter((block) => block && typeof block === 'object' && typeof block.type === 'string').map((block) => ({ ...block, text: block.text || '', items: Array.isArray(block.items) ? block.items : [] })) };
+    return { ...article, id: article.id ?? Date.now(), category: article.category || '기타', summary: article.summary || '', tags: Array.isArray(article.tags) ? article.tags : [], readingTime: Number(article.readingTime) || 0, content: article.content.filter((block) => block && typeof block === 'object' && typeof block.type === 'string').map((block) => ({ ...block, text: block.type === 'quote' ? normalizeQuoteText(block.text || '') : (block.text || ''), items: Array.isArray(block.items) ? block.items : [] })) };
   };
 
   const parseArticleJson = (input) => {
@@ -44,7 +55,7 @@
           : new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric' }).format(date);
       };
       const goHome = () => emit('home');
-      return { formatDate, goHome };
+      return { formatDate, formatQuoteText, goHome };
     },
     template: `
       <main class="mx-auto max-w-4xl px-5 pb-20 pt-8 sm:px-8 sm:pt-14">
@@ -67,7 +78,7 @@
             <template v-for="(block,index) in article.content" :key="index">
               <p v-if="block.type === 'paragraph'">{{ block.text }}</p>
               <h2 v-else-if="block.type === 'heading'" class="content-heading pt-4 text-2xl font-bold leading-9 text-ink">{{ block.text }}</h2>
-              <blockquote v-else-if="block.type === 'quote'" class="content-quote">“{{ block.text }}”</blockquote>
+              <blockquote v-else-if="block.type === 'quote'" class="content-quote">{{ formatQuoteText(block.text) }}</blockquote>
               <ul v-else-if="block.type === 'list'" class="content-list"><li v-for="item in block.items" :key="item">{{ item }}</li></ul>
               <aside v-else-if="block.type === 'note'" class="content-note"><p class="content-note-label">{{ block.label }}</p><p class="mt-2 text-[15px] leading-7 text-ink/70">{{ block.text }}</p></aside>
             </template>
@@ -85,4 +96,5 @@
   window.ArticleView = ArticleView;
   window.normalizeArticle = normalizeArticle;
   window.parseArticleJson = parseArticleJson;
+  window.normalizeQuoteText = normalizeQuoteText;
 })();
