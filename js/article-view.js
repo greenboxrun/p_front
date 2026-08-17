@@ -87,7 +87,7 @@
           <aside class="article-disclaimer max-w-2xl" aria-label="뉴스 안내">
             <div class="article-disclaimer-heading"><p class="article-disclaimer-label">AI CONTENT NOTICE</p></div>
             <p class="article-disclaimer-copy mt-2.5">본 뉴스는 AI가 작성한 콘텐츠로, 내용에 오류가 있을 수 있는 점 양해 부탁드립니다.<br>혹시 내용과 관련해 궁금하신 점이 있으시면 아래 버튼으로 문의해 주세요.<br>감사합니다.<br><a class="article-disclaimer-mail" href="mailto:clumpy49_queues@icloud.com">문의 메일 보내기 <span aria-hidden="true">↗</span></a></p>
-            <p class="article-disclaimer-site mt-3 pt-3">더 많은 네티즌 반응은 <a href="https://topic.173day.net">topic.173day.net</a>에서 확인하세요 <span aria-hidden="true">↗</span></p>
+            <p class="article-disclaimer-site mt-3 pt-3"><a href="https://topic.173day.net">topic.173day.net — 네티즌 반응 모아보기</a></p>
           </aside>
         </article>
       </main>`
