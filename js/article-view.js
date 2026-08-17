@@ -73,7 +73,12 @@
           <div v-if="article.tags.length" class="mt-6 flex flex-wrap gap-2">
             <span v-for="tag in article.tags" :key="tag" class="rounded-full bg-mist px-3 py-1 text-xs text-ink/65">#{{ tag }}</span>
           </div>
-          <div class="my-10 h-px bg-ink/15"></div>
+          <a v-if="article.source && article.source.url" class="article-source" :href="article.source.url" target="_blank" rel="noopener noreferrer" aria-label="기사 원문 확인하기">
+            <span class="article-source-link">원문 확인하기 <span aria-hidden="true">↗</span></span>
+            <span class="article-source-separator" aria-hidden="true">·</span>
+            <span class="article-source-copy">이 기사는 온라인 커뮤니티 반응을 정리했습니다</span>
+          </a>
+          <div v-else class="my-10 h-px bg-ink/15"></div>
           <div class="max-w-2xl space-y-8 text-[17px] leading-8 text-ink/75">
             <template v-for="(block,index) in article.content" :key="index">
               <p v-if="block.type === 'paragraph'">{{ block.text }}</p>
