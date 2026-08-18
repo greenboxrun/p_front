@@ -1,20 +1,4 @@
-const ARTICLES_URL = 'https://r2.173day.net/news-articles.js';
 const REFRESH_INTERVAL = 5 * 60 * 1000;
-
-function getArticles() {
-  if (!Array.isArray(window.NEWS_ARTICLES)) throw new Error('뉴스 기사 데이터를 불러오지 못했습니다.');
-  return window.NEWS_ARTICLES;
-}
-
-function loadArticlesScript() {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = `${ARTICLES_URL}?v=${Date.now()}`;
-    script.onload = () => { script.remove(); resolve(getArticles()); };
-    script.onerror = () => { script.remove(); reject(new Error('최신 뉴스 기사 데이터를 불러오지 못했습니다.')); };
-    document.head.appendChild(script);
-  });
-}
 
 const app = Vue.createApp({
   components: { ArticleView: window.ArticleView },
@@ -66,7 +50,7 @@ const app = Vue.createApp({
         loadError.value = false;
       }
       try {
-        articles.value = (await loadArticlesScript()).map(window.ArticleData.normalizeArticle);
+        articles.value = (await window.ArticleRepository.load()).map(window.ArticleData.normalizeArticle);
         isLoading.value = false;
         loadError.value = false;
       } catch (error) {
