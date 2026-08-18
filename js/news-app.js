@@ -9,7 +9,7 @@ const recordArticleView = (articleId) => {
   } catch (error) {
     console.warn('기사 조회 로그 전송에 실패했습니다.', error);
   }
-  fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch((error) => {
+  fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true, credentials: 'omit' }).catch((error) => {
     console.warn('기사 조회 로그 전송에 실패했습니다.', error);
   });
 };
