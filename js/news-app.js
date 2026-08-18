@@ -6,43 +6,6 @@ function getArticles() {
   return window.NEWS_ARTICLES;
 }
 
-// 기사 원문에 복사 과정에서 남은 이스케이프 따옴표가 있어도
-// 화면에는 자연스러운 따옴표만 표시되도록 정리한다.
-function cleanArticleValue(value) {
-  if (typeof value === 'string') {
-    let cleaned = value;
-    while (cleaned.includes('\\"')) cleaned = cleaned.replace(/\\"/g, '"');
-    return cleaned;
-  }
-  if (Array.isArray(value)) return value.map(cleanArticleValue);
-  if (value && typeof value === 'object') {
-    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, cleanArticleValue(item)]));
-  }
-  return value;
-}
-
-function normalizeArticle(article) {
-  const source = cleanArticleValue(article);
-  if (!source || typeof source !== 'object' || Array.isArray(source)) throw new Error('기사 데이터는 하나의 객체여야 합니다.');
-  if (!source.title || typeof source.title !== 'string') throw new Error('title 필드가 필요합니다.');
-  if (!source.content || !Array.isArray(source.content)) throw new Error('content 필드는 배열이어야 합니다.');
-  return {
-    ...source,
-    id: source.id ?? Date.now(),
-    category: source.category || '기타',
-    summary: source.summary || '',
-    tags: Array.isArray(source.tags) ? source.tags : [],
-    readingTime: Number(source.readingTime) || 0,
-    content: source.content.filter((block) => block && typeof block === 'object' && typeof block.type === 'string').map((block) => ({
-      ...block,
-      text: block.type === 'quote' && typeof window.normalizeQuoteText === 'function'
-        ? window.normalizeQuoteText(block.text || '')
-        : (block.text || ''),
-      items: Array.isArray(block.items) ? block.items : []
-    }))
-  };
-}
-
 function loadArticlesScript() {
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
@@ -103,7 +66,7 @@ const app = Vue.createApp({
         loadError.value = false;
       }
       try {
-        articles.value = (await loadArticlesScript()).map(normalizeArticle);
+        articles.value = (await loadArticlesScript()).map(window.ArticleData.normalizeArticle);
         isLoading.value = false;
         loadError.value = false;
       } catch (error) {

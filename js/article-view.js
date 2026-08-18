@@ -1,45 +1,10 @@
 (() => {
-  const normalizeQuoteText = (value) => {
-    const text = String(value ?? '');
-    if (text.startsWith('““') && text.endsWith('””')) return text.slice(1, -1);
-    return text;
-  };
+  const { normalizeArticle, normalizeQuoteText, parseArticleJson } = window.ArticleData;
 
   const formatQuoteText = (value) => {
     const text = normalizeQuoteText(value);
     if (text.startsWith('“') && text.endsWith('”')) return text;
     return `“${text}”`;
-  };
-  const normalizeArticle = (article) => {
-    if (!article || typeof article !== 'object' || Array.isArray(article)) throw new Error('기사 데이터는 하나의 객체여야 합니다.');
-    if (!article.title || typeof article.title !== 'string') throw new Error('title 필드가 필요합니다.');
-    if (!Array.isArray(article.content)) throw new Error('content 필드는 배열이어야 합니다.');
-    return { ...article, id: article.id ?? Date.now(), category: article.category || '기타', summary: article.summary || '', tags: Array.isArray(article.tags) ? article.tags : [], readingTime: Number(article.readingTime) || 0, content: article.content.filter((block) => block && typeof block === 'object' && typeof block.type === 'string').map((block) => ({ ...block, text: block.type === 'quote' ? normalizeQuoteText(block.text || '') : (block.text || ''), items: Array.isArray(block.items) ? block.items : [] })) };
-  };
-
-  const parseArticleJson = (input) => {
-    let source = String(input || '').trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim().replace(/,\s*$/, '');
-    let cleaned = '';
-    let inString = false;
-    let escaped = false;
-    for (let index = 0; index < source.length; index += 1) {
-      const character = source[index];
-      if (inString) {
-        cleaned += character;
-        if (escaped) escaped = false;
-        else if (character === '\\') escaped = true;
-        else if (character === '"') inString = false;
-        continue;
-      }
-      if (character === '"') inString = true;
-      if (character === ',') {
-        let next = index + 1;
-        while (/\s/.test(source[next] || '')) next += 1;
-        if (source[next] === '}' || source[next] === ']') continue;
-      }
-      cleaned += character;
-    }
-    return JSON.parse(cleaned);
   };
   const ArticleView = {
     props: {
