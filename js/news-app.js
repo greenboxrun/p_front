@@ -1,4 +1,18 @@
 const REFRESH_INTERVAL = 5 * 60 * 1000;
+const ARTICLE_VIEW_LOG_URL = 'https://api.173day.net/public/topic/news/articles';
+
+const recordArticleView = (articleId) => {
+  const url = `${ARTICLE_VIEW_LOG_URL}/${encodeURIComponent(String(articleId))}/view`;
+  const body = JSON.stringify({ article_id: articleId });
+  try {
+    if (navigator.sendBeacon && navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }))) return;
+  } catch (error) {
+    console.warn('기사 조회 로그 전송에 실패했습니다.', error);
+  }
+  fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }).catch((error) => {
+    console.warn('기사 조회 로그 전송에 실패했습니다.', error);
+  });
+};
 
 const app = Vue.createApp({
   components: { ArticleView: window.ArticleView },
@@ -17,6 +31,10 @@ const app = Vue.createApp({
     const rememberListScroll = () => {
       listScrollY = window.scrollY;
       shouldRestoreListScroll = true;
+    };
+    const handleArticleClick = (articleId) => {
+      recordArticleView(articleId);
+      rememberListScroll();
     };
     const scrollToTop = (behavior = 'smooth') => window.scrollTo({ top: 0, behavior });
     const restoreListScroll = () => {
@@ -71,7 +89,7 @@ const app = Vue.createApp({
       clearInterval(refreshTimer);
       window.removeEventListener('hashchange', handleHash);
     });
-    return { articles, isLoading, loadError, selectedArticle, briefDate, formatDate, goHome, returnToList, rememberListScroll, retryInitialLoad };
+    return { articles, isLoading, loadError, selectedArticle, briefDate, formatDate, goHome, returnToList, rememberListScroll, handleArticleClick, retryInitialLoad };
   }
 });
 app.mount('#app');
