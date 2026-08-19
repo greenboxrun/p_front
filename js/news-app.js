@@ -2,14 +2,20 @@ const REFRESH_INTERVAL = 5 * 60 * 1000;
 const app = Vue.createApp({
   components: { ArticleView: window.ArticleView },
   setup() {
+    const { LIST_ROUTE, parseRoute } = window.ArticleRouting;
     const articles = Vue.ref([]);
     const isLoading = Vue.ref(true);
     const loadError = Vue.ref(false);
     const now = Vue.ref(new Date());
-    const route = Vue.ref(location.hash || '#/');
+    const route = Vue.ref(location.hash || LIST_ROUTE);
     let refreshTimer;
     const listScroll = window.ArticleScroll.createListScrollManager();
-    const selectedArticle = Vue.computed(() => { const match = route.value.match(/^#\/article\/(\d+)$/); return match ? articles.value.find((article) => article.id === Number(match[1])) : null; });
+    const selectedArticle = Vue.computed(() => {
+      const currentRoute = parseRoute(route.value);
+      return currentRoute.name === 'article'
+        ? articles.value.find((article) => article.id === currentRoute.articleId)
+        : null;
+    });
     const briefDate = Vue.computed(() => new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }).format(now.value));
     const formatDate = (value) => new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric' }).format(new Date(value));
     const rememberListScroll = () => listScroll.remember();
@@ -20,18 +26,18 @@ const app = Vue.createApp({
     const restoreListScroll = () => listScroll.restore();
     const goHome = () => {
       listScroll.clear();
-      if (location.hash === '#/') return listScroll.scrollToTop();
-      location.hash = '#/';
+      if (location.hash === LIST_ROUTE) return listScroll.scrollToTop();
+      location.hash = LIST_ROUTE;
     };
     const returnToList = () => {
-      if (location.hash === '#/') return restoreListScroll();
-      location.hash = '#/';
+      if (location.hash === LIST_ROUTE) return restoreListScroll();
+      location.hash = LIST_ROUTE;
     };
     const handleHash = () => {
       const previousRoute = route.value;
-      const nextRoute = location.hash || '#/';
+      const nextRoute = location.hash || LIST_ROUTE;
       route.value = nextRoute;
-      const returningFromArticle = nextRoute === '#/' && /^#\/article\/\d+$/.test(previousRoute);
+      const returningFromArticle = nextRoute === LIST_ROUTE && parseRoute(previousRoute).name === 'article';
       if (returningFromArticle && listScroll.shouldRestore()) restoreListScroll();
       else listScroll.scrollToTop('auto');
     };
