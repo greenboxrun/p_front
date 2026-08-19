@@ -22,4 +22,8 @@ assert.equal(beacons[0].blob.options.type, 'application/json');
 const disabledTracker = context.window.ArticleAnalytics.createArticleViewTracker({ enabled: false });
 disabledTracker.record('not-counted');
 assert.equal(beacons.length, 1);
+
+const previewTracker = context.window.ArticleAnalytics.createArticleViewTracker({ isPreviewRoute: () => true });
+previewTracker.record('preview-only');
+assert.equal(beacons.length, 1);
 console.log('article-analytics checks passed');

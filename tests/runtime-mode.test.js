@@ -23,6 +23,13 @@ assert.deepEqual({ ...context.window.AppRuntime.createRuntime({
   isPreview: true,
   analyticsEnabled: false
 });
+assert.deepEqual({ ...context.window.AppRuntime.createRuntime({
+  hash: '#/preview/article/42'
+}) }, {
+  mode: 'preview',
+  isPreview: true,
+  analyticsEnabled: false
+});
 assert.deepEqual({ ...context.window.AppRuntime.createRuntime({ hash: '#/article/42' }) }, {
   mode: 'production',
   isPreview: false,

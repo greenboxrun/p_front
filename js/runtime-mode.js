@@ -1,8 +1,9 @@
 (() => {
   const PREVIEW_HASH = '#/preview';
+  const isPreviewHash = (hash = '') => hash === PREVIEW_HASH || hash.startsWith(`${PREVIEW_HASH}/`);
 
   const createRuntime = ({ hash = window.location.hash } = {}) => {
-    const isPreview = hash === PREVIEW_HASH;
+    const isPreview = isPreviewHash(hash);
     return Object.freeze({
       mode: isPreview ? 'preview' : 'production',
       isPreview,
@@ -10,5 +11,5 @@
     });
   };
 
-  window.AppRuntime = { PREVIEW_HASH, createRuntime, current: createRuntime() };
+  window.AppRuntime = { PREVIEW_HASH, isPreviewHash, createRuntime, current: createRuntime() };
 })();

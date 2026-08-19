@@ -2,7 +2,7 @@ const REFRESH_INTERVAL = 5 * 60 * 1000;
 const app = Vue.createApp({
   components: { ArticleView: window.ArticleView },
   setup() {
-    const { LIST_ROUTE, parseRoute } = window.ArticleRouting;
+    const { LIST_ROUTE, parseRoute, createArticleRoute, createListRoute } = window.ArticleRouting;
     const articles = Vue.ref([]);
     const isLoading = Vue.ref(true);
     const loadError = Vue.ref(false);
@@ -18,6 +18,9 @@ const app = Vue.createApp({
     });
     const briefDate = Vue.computed(() => new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }).format(now.value));
     const formatDate = (value) => new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric' }).format(new Date(value));
+    const routeMode = () => parseRoute(route.value).mode;
+    const listRoute = () => createListRoute({ mode: routeMode() });
+    const articleHref = (articleId) => createArticleRoute(articleId, { mode: routeMode() });
     const rememberListScroll = () => listScroll.remember();
     const handleArticleClick = (articleId) => {
       window.ArticleViewTracker.record(articleId);
@@ -26,18 +29,20 @@ const app = Vue.createApp({
     const restoreListScroll = () => listScroll.restore();
     const goHome = () => {
       listScroll.clear();
-      if (location.hash === LIST_ROUTE) return listScroll.scrollToTop();
-      location.hash = LIST_ROUTE;
+      const destination = listRoute();
+      if (location.hash === destination) return listScroll.scrollToTop();
+      location.hash = destination;
     };
     const returnToList = () => {
-      if (location.hash === LIST_ROUTE) return restoreListScroll();
-      location.hash = LIST_ROUTE;
+      const destination = listRoute();
+      if (location.hash === destination) return restoreListScroll();
+      location.hash = destination;
     };
     const handleHash = () => {
       const previousRoute = route.value;
       const nextRoute = location.hash || LIST_ROUTE;
       route.value = nextRoute;
-      const returningFromArticle = nextRoute === LIST_ROUTE && parseRoute(previousRoute).name === 'article';
+      const returningFromArticle = parseRoute(nextRoute).name === 'list' && parseRoute(previousRoute).name === 'article';
       if (returningFromArticle && listScroll.shouldRestore()) restoreListScroll();
       else listScroll.scrollToTop('auto');
     };
@@ -68,7 +73,7 @@ const app = Vue.createApp({
       clearInterval(refreshTimer);
       window.removeEventListener('hashchange', handleHash);
     });
-    return { articles, isLoading, loadError, selectedArticle, briefDate, formatDate, goHome, returnToList, rememberListScroll, handleArticleClick, retryInitialLoad };
+    return { articles, isLoading, loadError, selectedArticle, briefDate, formatDate, articleHref, goHome, returnToList, rememberListScroll, handleArticleClick, retryInitialLoad };
   }
 });
 app.mount('#app');
