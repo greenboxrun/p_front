@@ -18,4 +18,8 @@ assert.equal(beacons.length, 1);
 assert.equal(beacons[0].url, 'https://api.173day.net/public/topic/news/articles/story%2F42/view');
 assert.equal(beacons[0].blob.parts.join(''), '{"article_id":"story/42"}');
 assert.equal(beacons[0].blob.options.type, 'application/json');
+
+const disabledTracker = context.window.ArticleAnalytics.createArticleViewTracker({ enabled: false });
+disabledTracker.record('not-counted');
+assert.equal(beacons.length, 1);
 console.log('article-analytics checks passed');

@@ -6,11 +6,13 @@
     fetchRef = fetch,
     BlobRef = Blob,
     logger = console,
-    baseUrl = DEFAULT_VIEW_LOG_URL
+    baseUrl = DEFAULT_VIEW_LOG_URL,
+    enabled = true
   } = {}) => {
     const reportFailure = (error) => logger.warn('기사 조회 로그 전송에 실패했습니다.', error);
 
     const record = (articleId) => {
+      if (!enabled) return;
       const url = `${baseUrl}/${encodeURIComponent(String(articleId))}/view`;
       const body = JSON.stringify({ article_id: articleId });
       try {
@@ -31,5 +33,7 @@
   };
 
   window.ArticleAnalytics = { createArticleViewTracker };
-  window.ArticleViewTracker = createArticleViewTracker();
+  window.ArticleViewTracker = createArticleViewTracker({
+    enabled: window.AppRuntime ? window.AppRuntime.current.analyticsEnabled : true
+  });
 })();
