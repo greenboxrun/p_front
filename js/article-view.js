@@ -34,7 +34,8 @@
             <span class="text-ink/50">{{ article.readingTime || 0 }} MIN READ</span>
           </div>
           <h1 class="mt-5 font-display text-4xl font-bold leading-[1.35] tracking-[-.055em] sm:text-5xl">{{ article.title }}</h1>
-          <p class="mt-6 border-l-4 border-lime pl-5 text-lg leading-8 text-ink/70">{{ article.summary }}</p>
+          <!-- 본문 요약은 유지하며, 다시 표시하려면 hidden 클래스를 제거하세요. -->
+          <p class="hidden mt-6 border-l-4 border-lime pl-5 text-lg leading-8 text-ink/70">{{ article.summary }}</p>
           <div v-if="article.tags.length" class="mt-6 flex flex-wrap gap-2">
             <span v-for="tag in article.tags" :key="tag" class="rounded-full bg-mist px-3 py-1 text-xs text-ink/65">#{{ tag }}</span>
           </div>
