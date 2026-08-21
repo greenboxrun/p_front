@@ -3,6 +3,7 @@ const app = Vue.createApp({
   components: { ArticleView: window.ArticleView },
   setup() {
     const { LIST_ROUTE, parseRoute, createArticleRoute, createListRoute } = window.ArticleRouting;
+    const { article: siteNotice, createDisplayArticles, shouldTrackArticleView } = window.SiteNotice;
     const articles = Vue.ref([]);
     const isLoading = Vue.ref(true);
     const loadError = Vue.ref(false);
@@ -10,10 +11,11 @@ const app = Vue.createApp({
     const route = Vue.ref(location.hash || LIST_ROUTE);
     let refreshTimer;
     const listScroll = window.ArticleScroll.createListScrollManager();
+    const displayArticles = Vue.computed(() => createDisplayArticles(articles.value));
     const selectedArticle = Vue.computed(() => {
       const currentRoute = parseRoute(route.value);
       return currentRoute.name === 'article'
-        ? articles.value.find((article) => article.id === currentRoute.articleId)
+        ? displayArticles.value.find((article) => article.id === currentRoute.articleId)
         : null;
     });
     const briefDate = Vue.computed(() => new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }).format(now.value));
@@ -23,7 +25,8 @@ const app = Vue.createApp({
     const articleHref = (articleId) => createArticleRoute(articleId, { mode: routeMode() });
     const rememberListScroll = () => listScroll.remember();
     const handleArticleClick = (articleId) => {
-      window.ArticleViewTracker.record(articleId);
+      const article = displayArticles.value.find((item) => item.id === articleId);
+      if (shouldTrackArticleView(article)) window.ArticleViewTracker.record(articleId);
       rememberListScroll();
     };
     const restoreListScroll = () => listScroll.restore();
@@ -73,7 +76,7 @@ const app = Vue.createApp({
       clearInterval(refreshTimer);
       window.removeEventListener('hashchange', handleHash);
     });
-    return { articles, isLoading, loadError, selectedArticle, briefDate, formatDate, articleHref, goHome, returnToList, rememberListScroll, handleArticleClick, retryInitialLoad };
+    return { articles, displayArticles, siteNotice, isLoading, loadError, selectedArticle, briefDate, formatDate, articleHref, goHome, returnToList, rememberListScroll, handleArticleClick, retryInitialLoad };
   }
 });
 app.mount('#app');

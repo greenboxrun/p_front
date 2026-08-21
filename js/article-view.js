@@ -30,7 +30,7 @@
         <article>
           <div class="flex flex-wrap items-center gap-3 font-mono text-[11px] tracking-[.08em] text-moss">
             <span>{{ article.category || '기타' }}</span><span class="text-ink/30">/</span>
-            <span class="text-ink/50">{{ formatDate(article.publishedAt) }}</span><span class="text-ink/30">/</span>
+            <span class="text-ink/50">{{ article.isNotice ? 'NOTICE' : formatDate(article.publishedAt) }}</span><span class="text-ink/30">/</span>
             <span class="text-ink/50">{{ article.readingTime || 0 }} MIN READ</span>
           </div>
           <h1 class="mt-5 font-display text-4xl font-bold leading-[1.35] tracking-[-.055em] sm:text-5xl">{{ article.source && article.source.title ? article.source.title : article.title }}</h1>
@@ -51,6 +51,7 @@
               <h2 v-else-if="block.type === 'heading'" class="content-heading pt-4 text-2xl font-bold leading-9 text-ink">{{ block.text }}</h2>
               <blockquote v-else-if="block.type === 'quote'" class="content-quote">{{ formatQuoteText(block.text) }}</blockquote>
               <ul v-else-if="block.type === 'list'" class="content-list"><li v-for="item in block.items" :key="item">{{ item }}</li></ul>
+              <ol v-else-if="block.type === 'ordered-list'" class="content-ordered-list"><li v-for="item in block.items" :key="item">{{ item }}</li></ol>
               <aside v-else-if="block.type === 'note'" class="content-note"><p class="content-note-label">{{ block.label }}</p><p class="mt-2 text-[15px] leading-7 text-ink/70">{{ block.text }}</p></aside>
             </template>
           </div>
