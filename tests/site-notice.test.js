@@ -10,8 +10,9 @@ const { article, createDisplayArticles, shouldTrackArticleView } = context.windo
 assert.equal(article.title, 'topic.137day 즐기는 방법');
 assert.equal(article.category, '공지');
 assert.equal(article.isNotice, true);
-assert.equal(article.content.find((block) => block.type === 'list').items.length, 3);
-assert.equal(article.content.find((block) => block.type === 'ordered-list').items.length, 2);
+assert.equal(article.content.find((block) => block.type === 'list').items.length, 4);
+assert.equal(article.content.some((block) => block.type === 'heading' && block.text === '작성은 어떻게 진행되나요?'), true);
+assert.equal(article.content.some((block) => block.type === 'paragraph' && block.text.includes('약 30분에 한 번씩')), true);
 assert.equal(article.content.some((block) => block.type === 'note'), true);
 
 const remoteArticles = [{ id: 42, title: '뉴스' }];
